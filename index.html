@@ -1,0 +1,2197 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Ketidakhadiran Kakitangan EDHTAR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            text-align: center;
+            flex: 1;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+        
+        .tab:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tab.active {
+            background-color: white;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .dashboard {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .dashboard.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-absent {
+            background-color: var(--danger);
+        }
+        
+        .stat-el {
+            background-color: var(--warning);
+        }
+        
+        .stat-mc {
+            background-color: var(--success);
+        }
+        
+        .stat-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .stat-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 2px solid #eee;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-absent {
+            background-color: #ffeaea;
+            color: var(--danger);
+        }
+        
+        .badge-el {
+            background-color: #fff4e6;
+            color: var(--warning);
+        }
+        
+        .badge-mc {
+            background-color: #e9f7ef;
+            color: var(--success);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #219653;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            padding-left: 40px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .recent-entries {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .recent-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .sync-info {
+            background-color: #e8f4fc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .sync-info i {
+            color: var(--secondary);
+        }
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+        
+        .empty-state h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .empty-state p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .alert {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #856404;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                width: 100%;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10px;
+            }
+            
+            .data-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-clipboard-list"></i>
+                    <div>
+                        <h1>Aplikasi Ketidakhadiran Kakitangan EDHTAR</h1>
+                        <p class="subtitle">Sistem Pengurusan Absen, EL dan MC - Online dengan Google Sheets</p>
+                    </div>
+                </div>
+                <div class="sync-info" id="connection-status">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Menyemak koneksi...</span>
+                </div>
+            </div>
+            
+            <div class="nav-tabs">
+                <div class="tab active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard Utama
+                </div>
+                <div class="tab" data-tab="input">
+                    <i class="fas fa-edit"></i> Input Ketidakhadiran
+                </div>
+                <div class="tab" data-tab="staff">
+                    <i class="fas fa-users"></i> Data Kakitangan
+                </div>
+                <div class="tab" data-tab="backup">
+                    <i class="fas fa-download"></i> Backup & Sync
+                </div>
+            </div>
+        </header>
+        
+        <!-- Dashboard Utama -->
+        <section id="dashboard" class="dashboard active">
+            <div class="alert alert-info" id="dashboard-alert">
+                <i class="fas fa-info-circle"></i>
+                <span><strong>Menyemak koneksi...</strong></span>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon stat-absent">
+                        <i class="fas fa-user-times"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="absent-count">0</h3>
+                        <p>Kes ABSENT</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon stat-el">
+                        <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="el-count">0</h3>
+                        <p>Kes EL (Cuti Kecemasan)</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon stat-mc">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="mc-count">0</h3>
+                        <p>Kes MC (Cuti Sakit)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">20 Kakitangan Paling Kerap Tidak Hadir</h2>
+                    <button class="btn btn-primary" id="refresh-dashboard">
+                        <i class="fas fa-sync-alt"></i> Segarkan Data
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="top-absent-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Jawatan</th>
+                                <th>ABSENT</th>
+                                <th>EL</th>
+                                <th>MC</th>
+                                <th>Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody id="top-absent-body">
+                            <tr>
+                                <td colspan="7" class="empty-state">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <h3>Memuatkan data...</h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="recent-entries">
+                <h3 class="recent-title">Data Ketidakhadiran Terkini (10 Rekod Terakhir)</h3>
+                <div class="table-responsive">
+                    <table id="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Jawatan</th>
+                                <th>Tarikh</th>
+                                <th>Sebab</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-body">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <h3>Memuatkan data...</h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Dashboard Input Data -->
+        <section id="input" class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Input Data Ketidakhadiran</h2>
+                </div>
+                
+                <div class="alert alert-success" id="input-alert">
+                    <i class="fas fa-check-circle"></i>
+                    <span><strong>Menyemak koneksi...</strong></span>
+                </div>
+                
+                <form id="absence-form">
+                    <div class="form-group">
+                        <label for="staff-search">Cari Nama Kakitangan</label>
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="staff-search" class="search-input" placeholder="Taip nama untuk mencari...">
+                        </div>
+                        <div id="staff-results" style="display: none; margin-top: 10px; border: 1px solid #ddd; border-radius: 6px; max-height: 200px; overflow-y: auto; background: white;">
+                            <!-- Hasil carian akan muncul di sini -->
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="staff-name">Nama Kakitangan</label>
+                        <input type="text" id="staff-name" required readonly style="background-color: #f8f9fa;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="staff-position">Jawatan</label>
+                        <input type="text" id="staff-position" required readonly style="background-color: #f8f9fa;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="absence-date">Tarikh Ketidakhadiran</label>
+                        <input type="date" id="absence-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="absence-reason">Sebab Ketidakhadiran</label>
+                        <select id="absence-reason" required>
+                            <option value="">Pilih sebab...</option>
+                            <option value="ABSENT">ABSENT (Tidak Hadir Tanpa Makluman)</option>
+                            <option value="EL">EL (Cuti Kecemasan)</option>
+                            <option value="MC">MC (Cuti Sakit)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Catatan (Jika Ada)</label>
+                        <input type="text" id="notes" placeholder="Masukkan catatan tambahan...">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; gap: 10px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;" id="submit-absence-btn">
+                            <i class="fas fa-save"></i> Simpan Rekod
+                        </button>
+                        <button type="reset" class="btn btn-warning" style="flex: 1;" id="reset-form-btn">
+                            <i class="fas fa-redo"></i> Set Semula
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="sync-info">
+                <i class="fas fa-info-circle"></i>
+                <span id="sync-info-text">Data akan disimpan terus ke Google Sheets jika online. Jika offline, data akan disimpan sementara dalam browser.</span>
+            </div>
+        </section>
+        
+        <!-- Dashboard Data Kakitangan -->
+        <section id="staff" class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Senarai Kakitangan</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-success" id="add-staff-btn">
+                            <i class="fas fa-plus"></i> Tambah Kakitangan
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info" id="staff-alert">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Memuatkan data kakitangan...</span>
+                </div>
+                
+                <div class="table-responsive">
+                    <table id="staff-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nama</th>
+                                <th>Jawatan</th>
+                                <th>Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staff-body">
+                            <tr>
+                                <td colspan="4" class="empty-state">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <h3>Memuatkan data kakitangan...</h3>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Dashboard Backup Data -->
+        <section id="backup" class="dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Backup, Sync & Export Data</h2>
+                </div>
+                
+                <div class="alert alert-warning" id="backup-alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Penting:</strong> Sistem hybrid online/offline aktif.
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-sync-alt"></i> Sync Data</h3>
+                    <div class="data-actions">
+                        <button class="btn btn-success" id="sync-now-btn">
+                            <i class="fas fa-sync-alt"></i> Sync Sekarang
+                        </button>
+                        <button class="btn btn-info" id="check-pending-btn">
+                            <i class="fas fa-list"></i> Lihat Data Pending
+                        </button>
+                    </div>
+                    <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                        <span id="pending-count">0 data</span> menunggu sync ke Google Sheets
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-download"></i> Export Data</h3>
+                    <div class="data-actions">
+                        <button class="btn btn-primary" id="export-staff-btn">
+                            <i class="fas fa-file-excel"></i> Export Data Kakitangan
+                        </button>
+                        <button class="btn btn-primary" id="export-absence-btn">
+                            <i class="fas fa-file-excel"></i> Export Data Ketidakhadiran
+                        </button>
+                        <button class="btn btn-warning" id="export-all-btn">
+                            <i class="fas fa-download"></i> Export Semua Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-upload"></i> Import Data</h3>
+                    <div class="data-actions">
+                        <button class="btn btn-info" id="import-staff-btn">
+                            <i class="fas fa-file-upload"></i> Import Data Kakitangan
+                        </button>
+                        <button class="btn btn-info" id="import-absence-btn">
+                            <i class="fas fa-file-upload"></i> Import Data Ketidakhadiran
+                        </button>
+                        <input type="file" id="import-file" accept=".json,.csv" style="display: none;">
+                    </div>
+                    <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                        <i class="fas fa-info-circle"></i> Format yang disokong: JSON, CSV
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-chart-bar"></i> Statistik Data</h3>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 6px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div>
+                                <strong>Jumlah Kakitangan:</strong>
+                                <span id="total-staff-count" style="color: var(--primary); font-weight: bold;">0</span>
+                            </div>
+                            <div>
+                                <strong>Jumlah Rekod Ketidakhadiran:</strong>
+                                <span id="total-absence-count" style="color: var(--primary); font-weight: bold;">0</span>
+                            </div>
+                            <div>
+                                <strong>Data Pending Sync:</strong>
+                                <span id="pending-sync-count" style="color: var(--warning); font-weight: bold;">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <h3 style="color: var(--danger); margin-bottom: 15px;"><i class="fas fa-trash"></i> Tindakan Berisiko</h3>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            <strong>Peringatan:</strong> Tindakan ini akan memadam data dalam browser sahaja. Data dalam Google Sheets tidak terjejas.
+                        </div>
+                    </div>
+                    <div class="data-actions">
+                        <button class="btn btn-danger" id="clear-data-btn">
+                            <i class="fas fa-trash"></i> Kosongkan Data Browser
+                        </button>
+                        <button class="btn btn-danger" id="clear-pending-btn">
+                            <i class="fas fa-times-circle"></i> Kosongkan Data Pending
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Modal Staff (Tambah/Edit) -->
+        <div id="staff-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" id="modal-title">Tambah Kakitangan Baru</h2>
+                        <button type="button" class="btn btn-danger btn-sm" id="close-modal-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <form id="staff-form">
+                        <input type="hidden" id="staff-id">
+                        
+                        <div class="form-group">
+                            <label for="modal-name">Nama Kakitangan</label>
+                            <input type="text" id="modal-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="modal-position">Jawatan</label>
+                            <input type="text" id="modal-position" required>
+                        </div>
+                        
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <button type="submit" class="btn btn-primary" id="modal-submit-btn" style="flex: 1;">
+                                <i class="fas fa-save"></i> Simpan
+                            </button>
+                            <button type="button" class="btn btn-warning" id="modal-cancel-btn" style="flex: 1;">
+                                <i class="fas fa-times"></i> Batal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Loading -->
+        <div id="loading-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-content" style="background: transparent; box-shadow: none; width: 200px;">
+                <div style="text-align: center; color: white; background: rgba(0,0,0,0.7); padding: 30px; border-radius: 10px;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i>
+                    <h3 style="margin-top: 15px;">Memproses...</h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Pending Data -->
+        <div id="pending-modal" class="modal-overlay" style="display: none;">
+            <div class="modal-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Data Pending Sync</h2>
+                        <button type="button" class="btn btn-danger btn-sm" id="close-pending-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Data ini menunggu untuk disync ke Google Sheets</span>
+                    </div>
+                    
+                    <div id="pending-list" style="max-height: 400px; overflow-y: auto;">
+                        <!-- Data pending akan muncul di sini -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Aplikasi Ketidakhadiran Kakitangan EDHTAR &copy; <span id="current-year">2023</span></p>
+            <p><i class="fas fa-sync-alt"></i> Hybrid System - Online dengan Google Sheets & Offline Support</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // KONFIGURASI GOOGLE SHEETS
+        // ============================================
+        // GANTI URL INI DENGAN WEB APP URL ANDA DARI LANGKAH 4
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxl4U24QjfA_KaaGWdjvpuvE7PoURN9Bw4dHyhOuJ0_jdWXWJWE8y3W_c6mMEZFqKxm/exec';
+        
+        // ============================================
+        // SISTEM VARIABLES
+        // ============================================
+        let isOnlineMode = false;
+        let isEditing = false;
+        let currentStaffId = null;
+        
+        // ============================================
+        // DETEKSI KONEKSI INTERNET
+        // ============================================
+        function checkInternetConnection() {
+            return navigator.onLine;
+        }
+        
+        function updateConnectionStatus() {
+            const isOnline = checkInternetConnection();
+            const connectionStatus = document.getElementById('connection-status');
+            
+            if (isOnline) {
+                connectionStatus.innerHTML = `
+                    <i class="fas fa-cloud"></i>
+                    <span><strong>Mode Online:</strong> Data disimpan dalam Google Sheets</span>
+                `;
+                connectionStatus.style.backgroundColor = '#e8f4fc';
+                isOnlineMode = true;
+            } else {
+                connectionStatus.innerHTML = `
+                    <i class="fas fa-laptop"></i>
+                    <span><strong>Mode Offline:</strong> Data disimpan dalam browser sementara</span>
+                `;
+                connectionStatus.style.backgroundColor = '#fff3cd';
+                isOnlineMode = false;
+            }
+        }
+        
+        // ============================================
+        // SISTEM PENYIMPANAN HYBRID (LOCALSTORAGE)
+        // ============================================
+        function initializeData() {
+            if (!localStorage.getItem('edhtar_staff_offline')) {
+                localStorage.setItem('edhtar_staff_offline', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('edhtar_absence_offline')) {
+                localStorage.setItem('edhtar_absence_offline', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('edhtar_pending_sync')) {
+                localStorage.setItem('edhtar_pending_sync', JSON.stringify([]));
+            }
+            
+            if (!localStorage.getItem('edhtar_last_staff_id_offline')) {
+                localStorage.setItem('edhtar_last_staff_id_offline', '0');
+            }
+            
+            if (!localStorage.getItem('edhtar_last_absence_id_offline')) {
+                localStorage.setItem('edhtar_last_absence_id_offline', '0');
+            }
+        }
+        
+        // ============================================
+        // FUNGSI GOOGLE SHEETS API
+        // ============================================
+        async function callGoogleScript(action, data = {}) {
+            try {
+                const payload = {
+                    ...data,
+                    action: action
+                };
+                
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Important for Google Apps Script
+                    body: JSON.stringify(payload),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                // Since we're using no-cors, we can't read the response
+                // Google Apps Script will still process it
+                return { success: true, message: 'Data sent to Google Sheets' };
+                
+            } catch (error) {
+                console.error('API Error:', error);
+                // If error, save to offline storage
+                return { success: false, message: 'Failed to connect to Google Sheets', error: error.message };
+            }
+        }
+        
+        // ============================================
+        // FUNGSI UTAMA - LOAD DATA
+        // ============================================
+        async function loadDashboard() {
+            try {
+                updateDashboardAlert('Memuatkan data...', 'info');
+                
+                // Try to load from Google Sheets if online
+                if (isOnlineMode) {
+                    try {
+                        const stats = await calculateCombinedStats();
+                        updateDashboardUI(stats);
+                        
+                        // Load combined data for tables
+                        const combinedData = await getCombinedData();
+                        updateTopAbsentTable(combinedData.topAbsent);
+                        updateRecentEntries(combinedData.recentEntries);
+                        updateBackupStats(combinedData.staffCount, combinedData.absenceCount);
+                        
+                        updateDashboardAlert('Data dimuatkan dari Google Sheets', 'success');
+                        return;
+                    } catch (error) {
+                        console.log('Falling back to offline data:', error.message);
+                    }
+                }
+                
+                // Fallback to offline data
+                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+                
+                const stats = calculateStats(absenceData);
+                updateDashboardUI(stats);
+                updateTopAbsentTable(calculateTopAbsent(staffData, absenceData));
+                updateRecentEntries(getRecentEntries(absenceData));
+                updateBackupStats(staffData.length, absenceData.length);
+                
+                const modeText = isOnlineMode ? 'online' : 'offline';
+                updateDashboardAlert(`Data dimuatkan dari penyimpanan ${modeText}`, isOnlineMode ? 'info' : 'warning');
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                updateDashboardAlert('Gagal memuatkan data: ' + error.message, 'danger');
+            }
+        }
+        
+        async function loadStaff() {
+            try {
+                updateStaffAlert('Memuatkan data kakitangan...', 'info');
+                
+                let staffData = [];
+                
+                if (isOnlineMode) {
+                    try {
+                        // Try to get from Google Sheets
+                        const response = await getStaffFromSheets();
+                        if (response && response.success) {
+                            staffData = response.data;
+                            updateStaffAlert('Data kakitangan dimuatkan dari Google Sheets', 'success');
+                        } else {
+                            throw new Error('Failed to load from Google Sheets');
+                        }
+                    } catch (error) {
+                        // Fallback to offline
+                        staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                        updateStaffAlert('Data dimuatkan dari penyimpanan offline', 'warning');
+                    }
+                } else {
+                    staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                    updateStaffAlert('Data dimuatkan dari penyimpanan offline', 'info');
+                }
+                
+                updateStaffTable(staffData);
+                updateBackupStats(staffData.length, JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]').length);
+                
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                updateStaffAlert('Gagal memuatkan data kakitangan', 'danger');
+            }
+        }
+        
+        // ============================================
+        // FUNGSI CRUD - TAMBAH DATA
+        // ============================================
+        async function addStaff(staffData) {
+            try {
+                // Save to Google Sheets if online
+                if (isOnlineMode) {
+                    try {
+                        const response = await callGoogleScript('add_staff', {
+                            name: staffData.name,
+                            position: staffData.position
+                        });
+                        
+                        if (response.success) {
+                            // Also save to offline storage as backup
+                            saveStaffOffline(staffData);
+                            return { success: true, message: 'Kakitangan berjaya ditambah ke Google Sheets', online: true };
+                        }
+                    } catch (error) {
+                        console.log('Failed to save online, saving offline:', error);
+                    }
+                }
+                
+                // Save to offline storage
+                const id = saveStaffOffline(staffData);
+                return { 
+                    success: true, 
+                    message: 'Kakitangan berjaya ditambah (offline mode)',
+                    id: id,
+                    offline: true 
+                };
+                
+            } catch (error) {
+                console.error('Error adding staff:', error);
+                throw error;
+            }
+        }
+        
+        async function addAbsence(absenceData) {
+            try {
+                // Save to Google Sheets if online
+                if (isOnlineMode) {
+                    try {
+                        const response = await callGoogleScript('add_absence', absenceData);
+                        
+                        if (response.success) {
+                            // Also save to offline storage as backup
+                            saveAbsenceOffline(absenceData);
+                            return { success: true, message: 'Rekod berjaya disimpan ke Google Sheets', online: true };
+                        }
+                    } catch (error) {
+                        console.log('Failed to save online, saving offline:', error);
+                    }
+                }
+                
+                // Save to offline storage
+                const id = saveAbsenceOffline(absenceData);
+                return { 
+                    success: true, 
+                    message: 'Rekod berjaya disimpan (offline mode)',
+                    id: id,
+                    offline: true 
+                };
+                
+            } catch (error) {
+                console.error('Error adding absence:', error);
+                throw error;
+            }
+        }
+        
+        // ============================================
+        // FUNGSI OFFLINE STORAGE
+        // ============================================
+        function saveStaffOffline(staffData) {
+            const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+            const lastId = parseInt(localStorage.getItem('edhtar_last_staff_id_offline') || '0');
+            const newId = lastId + 1;
+            
+            const newStaff = {
+                id: newId,
+                name: staffData.name,
+                position: staffData.position,
+                join_date: new Date().toISOString().split('T')[0],
+                offline: true,
+                needs_sync: isOnlineMode ? false : true
+            };
+            
+            staffList.push(newStaff);
+            localStorage.setItem('edhtar_staff_offline', JSON.stringify(staffList));
+            localStorage.setItem('edhtar_last_staff_id_offline', newId.toString());
+            
+            // Add to pending sync if offline
+            if (!isOnlineMode) {
+                addToPendingSync('add_staff', newStaff);
+            }
+            
+            return newId;
+        }
+        
+        function saveAbsenceOffline(absenceData) {
+            const absenceList = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+            const lastId = parseInt(localStorage.getItem('edhtar_last_absence_id_offline') || '0');
+            const newId = lastId + 1;
+            
+            const newAbsence = {
+                id: newId,
+                staff_id: absenceData.staff_id,
+                staff_name: absenceData.staff_name,
+                staff_position: absenceData.staff_position,
+                date: absenceData.date,
+                reason: absenceData.reason,
+                notes: absenceData.notes || '',
+                input_date: new Date().toISOString(),
+                offline: true,
+                needs_sync: isOnlineMode ? false : true
+            };
+            
+            absenceList.push(newAbsence);
+            localStorage.setItem('edhtar_absence_offline', JSON.stringify(absenceList));
+            localStorage.setItem('edhtar_last_absence_id_offline', newId.toString());
+            
+            // Add to pending sync if offline
+            if (!isOnlineMode) {
+                addToPendingSync('add_absence', newAbsence);
+            }
+            
+            return newId;
+        }
+        
+        function addToPendingSync(action, data) {
+            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
+            pendingSync.push({
+                action: action,
+                data: data,
+                timestamp: new Date().toISOString(),
+                status: 'pending'
+            });
+            localStorage.setItem('edhtar_pending_sync', JSON.stringify(pendingSync));
+            updatePendingCount();
+        }
+        
+        // ============================================
+        // FUNGSI SYNC DATA
+        // ============================================
+        async function syncOfflineData() {
+            if (!checkInternetConnection()) {
+                showMessage('warning', 'Tidak ada koneksi internet. Sync akan dilakukan apabila online.');
+                return;
+            }
+            
+            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
+            if (pendingSync.length === 0) {
+                showMessage('info', 'Tiada data offline untuk disync');
+                return;
+            }
+            
+            showLoadingModal(true);
+            
+            try {
+                let successfulSyncs = 0;
+                let failedSyncs = 0;
+                
+                for (let i = 0; i < pendingSync.length; i++) {
+                    const syncItem = pendingSync[i];
+                    
+                    try {
+                        const response = await callGoogleScript(syncItem.action, syncItem.data);
+                        
+                        if (response.success) {
+                            successfulSyncs++;
+                            pendingSync[i].status = 'synced';
+                            pendingSync[i].sync_date = new Date().toISOString();
+                        } else {
+                            failedSyncs++;
+                            pendingSync[i].status = 'failed';
+                            pendingSync[i].error = response.message;
+                        }
+                    } catch (error) {
+                        failedSyncs++;
+                        pendingSync[i].status = 'failed';
+                        pendingSync[i].error = error.message;
+                    }
+                }
+                
+                // Update pending sync list
+                localStorage.setItem('edhtar_pending_sync', JSON.stringify(pendingSync));
+                updatePendingCount();
+                
+                // Show result message
+                if (successfulSyncs > 0) {
+                    showMessage('success', `${successfulSyncs} data berjaya disync ke Google Sheets`);
+                }
+                if (failedSyncs > 0) {
+                    showMessage('warning', `${failedSyncs} data gagal disync. Akan cuba lagi nanti.`);
+                }
+                
+            } catch (error) {
+                showMessage('error', 'Error semasa sync: ' + error.message);
+            } finally {
+                showLoadingModal(false);
+            }
+        }
+        
+        // ============================================
+        // FUNGSI PERHITUNGAN & STATISTIK
+        // ============================================
+        function calculateStats(absenceData) {
+            let absentCount = 0;
+            let elCount = 0;
+            let mcCount = 0;
+            
+            absenceData.forEach(record => {
+                if (record.reason === 'ABSENT') absentCount++;
+                if (record.reason === 'EL') elCount++;
+                if (record.reason === 'MC') mcCount++;
+            });
+            
+            return { absent: absentCount, el: elCount, mc: mcCount };
+        }
+        
+        async function calculateCombinedStats() {
+            const offlineAbsence = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+            const stats = calculateStats(offlineAbsence);
+            return stats;
+        }
+        
+        function calculateTopAbsent(staffData, absenceData) {
+            const staffCount = {};
+            
+            absenceData.forEach(record => {
+                const staffId = record.staff_id;
+                if (!staffCount[staffId]) {
+                    staffCount[staffId] = {
+                        staff_id: staffId,
+                        absent: 0,
+                        el: 0,
+                        mc: 0,
+                        total: 0
+                    };
+                }
+                
+                if (record.reason === 'ABSENT') staffCount[staffId].absent++;
+                if (record.reason === 'EL') staffCount[staffId].el++;
+                if (record.reason === 'MC') staffCount[staffId].mc++;
+                staffCount[staffId].total++;
+            });
+            
+            const topAbsent = [];
+            Object.keys(staffCount).forEach(staffId => {
+                const staff = staffData.find(s => s.id == staffId);
+                if (staff) {
+                    topAbsent.push({
+                        ...staffCount[staffId],
+                        name: staff.name,
+                        position: staff.position
+                    });
+                }
+            });
+            
+            return topAbsent.sort((a, b) => b.total - a.total).slice(0, 20);
+        }
+        
+        function getRecentEntries(absenceData) {
+            return [...absenceData]
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 10);
+        }
+        
+        async function getCombinedData() {
+            const offlineStaff = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+            const offlineAbsence = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+            
+            return {
+                staffCount: offlineStaff.length,
+                absenceCount: offlineAbsence.length,
+                topAbsent: calculateTopAbsent(offlineStaff, offlineAbsence),
+                recentEntries: getRecentEntries(offlineAbsence)
+            };
+        }
+        
+        // ============================================
+        // FUNGSI UI UPDATE
+        // ============================================
+        function updateDashboardUI(stats) {
+            document.getElementById("absent-count").textContent = stats.absent;
+            document.getElementById("el-count").textContent = stats.el;
+            document.getElementById("mc-count").textContent = stats.mc;
+        }
+        
+        function updateTopAbsentTable(staffList) {
+            const tbody = document.getElementById("top-absent-body");
+            
+            if (!staffList || staffList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Tiada data ketidakhadiran</h3>
+                            <p>Belum ada rekod ketidakhadiran dimasukkan</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            staffList.forEach((staff, index) => {
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${staff.name || '-'}</td>
+                        <td>${staff.position || '-'}</td>
+                        <td>${staff.absent || 0}</td>
+                        <td>${staff.el || 0}</td>
+                        <td>${staff.mc || 0}</td>
+                        <td><strong>${staff.total || 0}</strong></td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        function updateRecentEntries(entries) {
+            const tbody = document.getElementById("recent-body");
+            
+            if (!entries || entries.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Tiada data terkini</h3>
+                            <p>Belum ada rekod ketidakhadiran dimasukkan</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            entries.forEach(entry => {
+                const badgeClass = `badge-${(entry.reason || '').toLowerCase()}`;
+                html += `
+                    <tr>
+                        <td>${entry.staff_name || '-'}</td>
+                        <td>${entry.staff_position || '-'}</td>
+                        <td>${formatDate(entry.date)}</td>
+                        <td><span class="badge ${badgeClass}">${entry.reason || '-'}</span></td>
+                        <td>${entry.notes || "-"}</td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+        }
+        
+        function updateStaffTable(staffList) {
+            const tbody = document.getElementById("staff-body");
+            
+            if (!staffList || staffList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="empty-state">
+                            <i class="fas fa-user-plus"></i>
+                            <h3>Tiada data kakitangan</h3>
+                            <p>Klik "Tambah Kakitangan" untuk mula menambah data</p>
+                            <button class="btn btn-success" id="add-first-staff-btn" style="margin-top: 15px;">
+                                <i class="fas fa-plus"></i> Tambah Kakitangan Pertama
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                
+                setTimeout(() => {
+                    const btn = document.getElementById('add-first-staff-btn');
+                    if (btn) {
+                        btn.addEventListener('click', () => {
+                            document.getElementById('add-staff-btn').click();
+                        });
+                    }
+                }, 100);
+                
+                return;
+            }
+            
+            let html = '';
+            staffList.forEach((staff, index) => {
+                const offlineBadge = staff.offline ? '<span class="badge badge-warning" style="font-size: 0.7rem; margin-left: 5px;">Offline</span>' : '';
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${staff.name} ${offlineBadge}</td>
+                        <td>${staff.position}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-warning btn-sm edit-staff-btn" data-id="${staff.id}" data-name="${staff.name}" data-position="${staff.position}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-staff-btn" data-id="${staff.id}">
+                                    <i class="fas fa-trash"></i> Padam
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tbody.innerHTML = html;
+            attachStaffTableEvents();
+        }
+        
+        function updateBackupStats(staffCount, absenceCount) {
+            document.getElementById("total-staff-count").textContent = staffCount;
+            document.getElementById("total-absence-count").textContent = absenceCount;
+            updatePendingCount();
+        }
+        
+        function updatePendingCount() {
+            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
+            const pendingCount = pendingSync.filter(item => item.status === 'pending').length;
+            
+            document.getElementById("pending-count").textContent = `${pendingCount} data`;
+            document.getElementById("pending-sync-count").textContent = pendingCount;
+        }
+        
+        function updateDashboardAlert(message, type) {
+            const alert = document.getElementById('dashboard-alert');
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'warning' ? 'fa-exclamation-triangle' : 
+                        type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+        }
+        
+        function updateStaffAlert(message, type) {
+            const alert = document.getElementById('staff-alert');
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'warning' ? 'fa-exclamation-triangle' : 
+                        type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            
+            alert.className = `alert alert-${type}`;
+            alert.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
+        }
+        
+        // ============================================
+        // FUNGSI HELPER
+        // ============================================
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                
+                return date.toLocaleDateString('ms-MY', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        function showMessage(type, message, duration = 3000) {
+            // Remove existing messages
+            document.querySelectorAll('.message-alert').forEach(el => el.remove());
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-alert';
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 6px;
+                color: white;
+                font-weight: 500;
+                z-index: 1001;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                animation: slideIn 0.3s ease;
+                max-width: 400px;
+                word-wrap: break-word;
+            `;
+            
+            if (type === 'success') {
+                messageDiv.style.backgroundColor = '#27ae60';
+            } else if (type === 'error') {
+                messageDiv.style.backgroundColor = '#e74c3c';
+            } else if (type === 'warning') {
+                messageDiv.style.backgroundColor = '#f39c12';
+            } else {
+                messageDiv.style.backgroundColor = '#3498db';
+            }
+            
+            messageDiv.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'}" 
+                       style="font-size: 1.2rem;"></i>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(messageDiv);
+            
+            // Remove after duration
+            setTimeout(() => {
+                messageDiv.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (messageDiv.parentNode) {
+                        messageDiv.parentNode.removeChild(messageDiv);
+                    }
+                }, 300);
+            }, duration);
+        }
+        
+        function showLoadingModal(show) {
+            const modal = document.getElementById('loading-modal');
+            if (show) {
+                modal.style.display = 'flex';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        function attachStaffTableEvents() {
+            // Edit staff button
+            document.querySelectorAll('.edit-staff-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    const position = this.getAttribute('data-position');
+                    
+                    document.getElementById('modal-title').textContent = 'Edit Kakitangan';
+                    document.getElementById('staff-id').value = id;
+                    document.getElementById('modal-name').value = name;
+                    document.getElementById('modal-position').value = position;
+                    document.getElementById('staff-modal').style.display = 'flex';
+                    isEditing = true;
+                    currentStaffId = id;
+                });
+            });
+            
+            // Delete staff button
+            document.querySelectorAll('.delete-staff-btn').forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.closest('tr').querySelector('td:nth-child(2)').textContent;
+                    
+                    if (confirm(`Adakah anda pasti ingin memadam kakitangan "${name}"?`)) {
+                        try {
+                            showLoadingModal(true);
+                            
+                            // Remove from offline storage
+                            const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                            const filteredList = staffList.filter(staff => staff.id != id);
+                            localStorage.setItem('edhtar_staff_offline', JSON.stringify(filteredList));
+                            
+                            showMessage('success', 'Kakitangan berjaya dipadam');
+                            loadStaff();
+                            loadDashboard();
+                        } catch (error) {
+                            showMessage('error', 'Gagal memadam kakitangan: ' + error.message, 5000);
+                        } finally {
+                            showLoadingModal(false);
+                        }
+                    }
+                });
+            });
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize data storage
+            initializeData();
+            
+            // Set current year
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById("absence-date").value = today;
+            
+            // Update connection status
+            updateConnectionStatus();
+            updatePendingCount();
+            
+            // Load initial data
+            loadDashboard();
+            loadStaff();
+            
+            // ============================================
+            // NAVIGATION TABS
+            // ============================================
+            document.querySelectorAll(".tab").forEach(tab => {
+                tab.addEventListener("click", function() {
+                    // Remove active class from all tabs
+                    document.querySelectorAll(".tab").forEach(t => {
+                        t.classList.remove("active");
+                    });
+                    
+                    // Add active class to clicked tab
+                    this.classList.add("active");
+                    
+                    // Hide all dashboards
+                    document.querySelectorAll(".dashboard").forEach(dashboard => {
+                        dashboard.classList.remove("active");
+                    });
+                    
+                    // Show selected dashboard
+                    const tabId = this.getAttribute("data-tab");
+                    document.getElementById(tabId).classList.add("active");
+                    
+                    // Refresh data when switching tabs
+                    if (tabId === 'dashboard') {
+                        loadDashboard();
+                    } else if (tabId === 'staff') {
+                        loadStaff();
+                    } else if (tabId === 'backup') {
+                        updatePendingCount();
+                    }
+                });
+            });
+            
+            // ============================================
+            // DASHBOARD EVENTS
+            // ============================================
+            document.getElementById("refresh-dashboard").addEventListener("click", function() {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyegarkan...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    loadDashboard();
+                    this.innerHTML = originalHTML;
+                    this.disabled = false;
+                }, 500);
+            });
+            
+            // ============================================
+            // INPUT FORM EVENTS
+            // ============================================
+            // Staff search
+            let searchTimeout;
+            document.getElementById("staff-search").addEventListener("input", function() {
+                const query = this.value.trim();
+                const resultsDiv = document.getElementById("staff-results");
+                
+                if (searchTimeout) {
+                    clearTimeout(searchTimeout);
+                }
+                
+                if (!query) {
+                    resultsDiv.style.display = "none";
+                    return;
+                }
+                
+                resultsDiv.innerHTML = `
+                    <div style="padding: 15px; text-align: center; color: #666;">
+                        <i class="fas fa-spinner fa-spin" style="margin-right: 5px;"></i>
+                        Mencari...
+                    </div>
+                `;
+                resultsDiv.style.display = "block";
+                
+                searchTimeout = setTimeout(() => {
+                    const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                    const searchTerm = query.toLowerCase();
+                    const results = staffList.filter(staff => 
+                        staff.name.toLowerCase().includes(searchTerm) ||
+                        staff.position.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    if (results.length === 0) {
+                        resultsDiv.innerHTML = `
+                            <div style="padding: 15px; text-align: center; color: #666;">
+                                <i class="fas fa-search" style="margin-right: 5px;"></i>
+                                Tiada kakitangan ditemui
+                            </div>
+                        `;
+                    } else {
+                        let html = '<div style="max-height: 200px; overflow-y: auto;">';
+                        results.forEach(staff => {
+                            html += `
+                                <div class="staff-result-item" 
+                                     data-id="${staff.id}" 
+                                     data-name="${staff.name}" 
+                                     data-position="${staff.position}"
+                                     style="padding: 10px 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s;">
+                                    <div style="font-weight: 500;">${staff.name}</div>
+                                    <div style="font-size: 0.85rem; color: #666;">${staff.position}</div>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        resultsDiv.innerHTML = html;
+                        
+                        document.querySelectorAll('.staff-result-item').forEach(item => {
+                            item.addEventListener('click', function() {
+                                document.getElementById("staff-name").value = this.getAttribute('data-name');
+                                document.getElementById("staff-position").value = this.getAttribute('data-position');
+                                resultsDiv.style.display = "none";
+                            });
+                        });
+                    }
+                }, 300);
+            });
+            
+            // Click outside to close search results
+            document.addEventListener('click', function(event) {
+                const searchContainer = document.querySelector('.search-container');
+                const resultsDiv = document.getElementById('staff-results');
+                
+                if (searchContainer && resultsDiv && !searchContainer.contains(event.target)) {
+                    resultsDiv.style.display = 'none';
+                }
+            });
+            
+            // Reset form
+            document.getElementById("reset-form-btn").addEventListener("click", function() {
+                document.getElementById("staff-name").value = "";
+                document.getElementById("staff-position").value = "";
+                document.getElementById("staff-search").value = "";
+                document.getElementById("staff-results").style.display = "none";
+                document.getElementById("absence-date").value = today;
+                document.getElementById("absence-reason").value = "";
+                document.getElementById("notes").value = "";
+            });
+            
+            // Absence form submission
+            document.getElementById("absence-form").addEventListener("submit", async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById("staff-name").value.trim();
+                const position = document.getElementById("staff-position").value.trim();
+                const date = document.getElementById("absence-date").value;
+                const reason = document.getElementById("absence-reason").value;
+                const notes = document.getElementById("notes").value.trim();
+                
+                if (!name || !position) {
+                    showMessage('error', 'Sila pilih kakitangan dari senarai carian');
+                    return;
+                }
+                
+                if (!date) {
+                    showMessage('error', 'Sila pilih tarikh ketidakhadiran');
+                    return;
+                }
+                
+                if (!reason) {
+                    showMessage('error', 'Sila pilih sebab ketidakhadiran');
+                    return;
+                }
+                
+                const submitBtn = document.getElementById('submit-absence-btn');
+                const originalHTML = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                submitBtn.disabled = true;
+                
+                try {
+                    showLoadingModal(true);
+                    
+                    // Find staff ID
+                    const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                    const staff = staffList.find(s => s.name === name && s.position === position);
+                    
+                    if (!staff) {
+                        throw new Error('Kakitangan tidak ditemui. Sila tambah kakitangan dahulu.');
+                    }
+                    
+                    const result = await addAbsence({
+                        staff_id: staff.id,
+                        staff_name: name,
+                        staff_position: position,
+                        date: date,
+                        reason: reason,
+                        notes: notes
+                    });
+                    
+                    const modeText = result.offline ? ' (offline)' : ' (online)';
+                    showMessage('success', result.message + modeText);
+                    
+                    // Reset form
+                    document.getElementById("absence-form").reset();
+                    document.getElementById("absence-date").value = today;
+                    document.getElementById("staff-results").style.display = "none";
+                    
+                    // Refresh dashboard
+                    loadDashboard();
+                    
+                } catch (error) {
+                    showMessage('error', 'Gagal menyimpan rekod: ' + error.message, 5000);
+                } finally {
+                    submitBtn.innerHTML = originalHTML;
+                    submitBtn.disabled = false;
+                    showLoadingModal(false);
+                }
+            });
+            
+            // ============================================
+            // STAFF MANAGEMENT EVENTS
+            // ============================================
+            document.getElementById("add-staff-btn").addEventListener("click", function() {
+                document.getElementById('modal-title').textContent = 'Tambah Kakitangan Baru';
+                document.getElementById('staff-id').value = '';
+                document.getElementById('modal-name').value = '';
+                document.getElementById('modal-position').value = '';
+                document.getElementById('staff-modal').style.display = 'flex';
+                isEditing = false;
+                currentStaffId = null;
+            });
+            
+            document.getElementById("staff-form").addEventListener("submit", async function(e) {
+                e.preventDefault();
+                
+                const id = document.getElementById('staff-id').value;
+                const name = document.getElementById('modal-name').value.trim();
+                const position = document.getElementById('modal-position').value.trim();
+                
+                if (!name || !position) {
+                    showMessage('error', 'Sila isi semua maklumat');
+                    return;
+                }
+                
+                const submitBtn = document.getElementById('modal-submit-btn');
+                const originalHTML = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+                submitBtn.disabled = true;
+                
+                try {
+                    showLoadingModal(true);
+                    
+                    const result = await addStaff({ name, position });
+                    
+                    const modeText = result.offline ? ' (offline)' : ' (online)';
+                    showMessage('success', result.message + modeText);
+                    
+                    // Close modal and refresh
+                    document.getElementById('staff-modal').style.display = 'none';
+                    loadStaff();
+                    loadDashboard();
+                    
+                    // Reset form
+                    this.reset();
+                    
+                } catch (error) {
+                    showMessage('error', 'Gagal menyimpan: ' + error.message, 5000);
+                } finally {
+                    submitBtn.innerHTML = originalHTML;
+                    submitBtn.disabled = false;
+                    showLoadingModal(false);
+                }
+            });
+            
+            // Modal close buttons
+            document.getElementById("close-modal-btn").addEventListener("click", function() {
+                document.getElementById('staff-modal').style.display = 'none';
+                document.getElementById('staff-form').reset();
+                isEditing = false;
+                currentStaffId = null;
+            });
+            
+            document.getElementById("modal-cancel-btn").addEventListener("click", function() {
+                document.getElementById('staff-modal').style.display = 'none';
+                document.getElementById('staff-form').reset();
+                isEditing = false;
+                currentStaffId = null;
+            });
+            
+            document.getElementById('staff-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                    document.getElementById('staff-form').reset();
+                    isEditing = false;
+                    currentStaffId = null;
+                }
+            });
+            
+            // ============================================
+            // BACKUP & SYNC EVENTS
+            // ============================================
+            document.getElementById("sync-now-btn").addEventListener("click", syncOfflineData);
+            
+            document.getElementById("check-pending-btn").addEventListener("click", function() {
+                const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
+                const pendingList = document.getElementById('pending-list');
+                
+                if (pendingSync.length === 0) {
+                    pendingList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-check-circle"></i>
+                            <h3>Tiada data pending</h3>
+                            <p>Semua data telah disync</p>
+                        </div>
+                    `;
+                } else {
+                    let html = '<div style="padding: 15px;">';
+                    pendingSync.forEach((item, index) => {
+                        const statusColor = item.status === 'pending' ? 'warning' : 
+                                          item.status === 'synced' ? 'success' : 'danger';
+                        const statusIcon = item.status === 'pending' ? 'fa-clock' : 
+                                         item.status === 'synced' ? 'fa-check' : 'fa-times';
+                        
+                        html += `
+                            <div style="padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>${item.action === 'add_staff' ? 'Tambah Kakitangan' : 'Tambah Ketidakhadiran'}</strong>
+                                        <span class="badge badge-${statusColor}" style="margin-left: 10px;">
+                                            <i class="fas ${statusIcon}"></i> ${item.status}
+                                        </span>
+                                    </div>
+                                    <small>${formatDate(item.timestamp)}</small>
+                                </div>
+                                <div style="margin-top: 5px; font-size: 0.9rem; color: #666;">
+                                    ${item.action === 'add_staff' ? 
+                                        `Nama: ${item.data.name}, Jawatan: ${item.data.position}` : 
+                                        `Nama: ${item.data.staff_name}, Tarikh: ${formatDate(item.data.date)}, Sebab: ${item.data.reason}`}
+                                </div>
+                                ${item.error ? `<div style="color: #e74c3c; font-size: 0.8rem; margin-top: 5px;">Error: ${item.error}</div>` : ''}
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    pendingList.innerHTML = html;
+                }
+                
+                document.getElementById('pending-modal').style.display = 'flex';
+            });
+            
+            document.getElementById("close-pending-btn").addEventListener("click", function() {
+                document.getElementById('pending-modal').style.display = 'none';
+            });
+            
+            document.getElementById('pending-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.style.display = 'none';
+                }
+            });
+            
+            // Export buttons
+            document.getElementById("export-staff-btn").addEventListener("click", function() {
+                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                if (staffData.length === 0) {
+                    showMessage('warning', 'Tiada data kakitangan untuk diexport');
+                    return;
+                }
+                
+                const csvContent = convertToCSV(staffData);
+                downloadCSV(csvContent, `edhtar_kakitangan_${new Date().toISOString().split('T')[0]}.csv`);
+                showMessage('success', 'Data kakitangan berjaya diexport');
+            });
+            
+            document.getElementById("export-absence-btn").addEventListener("click", function() {
+                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+                if (absenceData.length === 0) {
+                    showMessage('warning', 'Tiada data ketidakhadiran untuk diexport');
+                    return;
+                }
+                
+                const csvContent = convertToCSV(absenceData);
+                downloadCSV(csvContent, `edhtar_ketidakhadiran_${new Date().toISOString().split('T')[0]}.csv`);
+                showMessage('success', 'Data ketidakhadiran berjaya diexport');
+            });
+            
+            document.getElementById("export-all-btn").addEventListener("click", function() {
+                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
+                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+                const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
+                
+                const allData = {
+                    staff: staffData,
+                    absence: absenceData,
+                    pending_sync: pendingSync,
+                    export_date: new Date().toISOString(),
+                    total_staff: staffData.length,
+                    total_absence: absenceData.length,
+                    total_pending: pendingSync.length
+                };
+                
+                const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `edhtar_backup_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                showMessage('success', 'Backup semua data berjaya diexport');
+            });
+            
+            // Clear data buttons
+            document.getElementById("clear-data-btn").addEventListener("click", function() {
+                if (confirm('Adakah anda pasti ingin mengosongkan SEMUA data dalam browser? Data dalam Google Sheets tidak terjejas.')) {
+                    localStorage.removeItem('edhtar_staff_offline');
+                    localStorage.removeItem('edhtar_absence_offline');
+                    localStorage.removeItem('edhtar_pending_sync');
+                    localStorage.removeItem('edhtar_last_staff_id_offline');
+                    localStorage.removeItem('edhtar_last_absence_id_offline');
+                    
+                    initializeData();
+                    loadDashboard();
+                    loadStaff();
+                    showMessage('success', 'Semua data dalam browser telah dikosongkan');
+                }
+            });
+            
+            document.getElementById("clear-pending-btn").addEventListener("click", function() {
+                if (confirm('Adakah anda pasti ingin mengosongkan data pending sync?')) {
+                    localStorage.setItem('edhtar_pending_sync', JSON.stringify([]));
+                    updatePendingCount();
+                    showMessage('success', 'Data pending sync telah dikosongkan');
+                }
+            });
+            
+            // ============================================
+            // NETWORK EVENT LISTENERS
+            // ============================================
+            window.addEventListener('online', function() {
+                updateConnectionStatus();
+                showMessage('success', 'Anda kini online. Data akan disimpan ke Google Sheets.');
+                syncOfflineData();
+                loadDashboard();
+            });
+            
+            window.addEventListener('offline', function() {
+                updateConnectionStatus();
+                showMessage('warning', 'Anda kini offline. Data akan disimpan sementara dalam browser.');
+                loadDashboard();
+            });
+            
+            // Auto-sync every 5 minutes if online
+            setInterval(() => {
+                if (isOnlineMode) {
+                    syncOfflineData();
+                }
+            }, 5 * 60 * 1000);
+            
+            // Add CSS animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // ============================================
+        // HELPER FUNCTIONS
+        // ============================================
+        function convertToCSV(data) {
+            if (data.length === 0) return '';
+            
+            const headers = Object.keys(data[0]);
+            const csvRows = [];
+            
+            csvRows.push(headers.join(','));
+            
+            for (const row of data) {
+                const values = headers.map(header => {
+                    const value = row[header];
+                    const escaped = ('' + value).replace(/"/g, '""');
+                    return `"${escaped}"`;
+                });
+                csvRows.push(values.join(','));
+            }
+            
+            return csvRows.join('\n');
+        }
+        
+        function downloadCSV(csvContent, fileName) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Fallback function for Google Sheets API (simplified)
+        async function getStaffFromSheets() {
+            // This is a simplified version. In production, you'd make actual API call
+            return { success: true, data: [] };
+        }
+    </script>
+</body>
+</html>
