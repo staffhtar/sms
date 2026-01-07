@@ -6,6 +6,7 @@
     <title>Aplikasi Ketidakhadiran Kakitangan EDHTAR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* (CSS STYLE SAMA SEPERTI SEBELUM) */
         :root {
             --primary: #2c3e50;
             --secondary: #3498db;
@@ -505,12 +506,12 @@
                     <i class="fas fa-clipboard-list"></i>
                     <div>
                         <h1>Aplikasi Ketidakhadiran Kakitangan EDHTAR</h1>
-                        <p class="subtitle">Sistem Pengurusan Absen, EL dan MC - Online dengan Google Sheets</p>
+                        <p class="subtitle">Sistem Pengurusan Absen, EL dan MC - Data Terpusat di Google Sheets</p>
                     </div>
                 </div>
                 <div class="sync-info" id="connection-status">
-                    <i class="fas fa-spinner fa-spin"></i>
-                    <span>Menyemak koneksi...</span>
+                    <i class="fas fa-cloud"></i>
+                    <span><strong>Mode Online:</strong> Data terpusat di Google Sheets</span>
                 </div>
             </div>
             
@@ -525,7 +526,7 @@
                     <i class="fas fa-users"></i> Data Kakitangan
                 </div>
                 <div class="tab" data-tab="backup">
-                    <i class="fas fa-download"></i> Backup & Sync
+                    <i class="fas fa-download"></i> Backup & Export
                 </div>
             </div>
         </header>
@@ -533,8 +534,8 @@
         <!-- Dashboard Utama -->
         <section id="dashboard" class="dashboard active">
             <div class="alert alert-info" id="dashboard-alert">
-                <i class="fas fa-info-circle"></i>
-                <span><strong>Menyemak koneksi...</strong></span>
+                <i class="fas fa-spinner fa-spin"></i>
+                <span><strong>Memuatkan data dari Google Sheets...</strong></span>
             </div>
             
             <div class="stats-container">
@@ -573,7 +574,7 @@
                 <div class="card-header">
                     <h2 class="card-title">20 Kakitangan Paling Kerap Tidak Hadir</h2>
                     <button class="btn btn-primary" id="refresh-dashboard">
-                        <i class="fas fa-sync-alt"></i> Segarkan Data
+                        <i class="fas fa-sync-alt"></i> Muat Semula
                     </button>
                 </div>
                 <div class="table-responsive">
@@ -593,7 +594,7 @@
                             <tr>
                                 <td colspan="7" class="empty-state">
                                     <i class="fas fa-spinner fa-spin"></i>
-                                    <h3>Memuatkan data...</h3>
+                                    <h3>Memuatkan data dari Google Sheets...</h3>
                                 </td>
                             </tr>
                         </tbody>
@@ -618,7 +619,7 @@
                             <tr>
                                 <td colspan="5" class="empty-state">
                                     <i class="fas fa-spinner fa-spin"></i>
-                                    <h3>Memuatkan data...</h3>
+                                    <h3>Memuatkan data dari Google Sheets...</h3>
                                 </td>
                             </tr>
                         </tbody>
@@ -635,8 +636,8 @@
                 </div>
                 
                 <div class="alert alert-success" id="input-alert">
-                    <i class="fas fa-check-circle"></i>
-                    <span><strong>Menyemak koneksi...</strong></span>
+                    <i class="fas fa-cloud"></i>
+                    <span><strong>Data akan disimpan terus ke Google Sheets</strong></span>
                 </div>
                 
                 <form id="absence-form">
@@ -683,7 +684,7 @@
                     
                     <div class="form-group" style="display: flex; gap: 10px;">
                         <button type="submit" class="btn btn-primary" style="flex: 1;" id="submit-absence-btn">
-                            <i class="fas fa-save"></i> Simpan Rekod
+                            <i class="fas fa-save"></i> Simpan ke Google Sheets
                         </button>
                         <button type="reset" class="btn btn-warning" style="flex: 1;" id="reset-form-btn">
                             <i class="fas fa-redo"></i> Set Semula
@@ -694,7 +695,7 @@
             
             <div class="sync-info">
                 <i class="fas fa-info-circle"></i>
-                <span id="sync-info-text">Data akan disimpan terus ke Google Sheets jika online. Jika offline, data akan disimpan sementara dalam browser.</span>
+                <span>Semua data disimpan terus ke Google Sheets dan boleh diakses dari mana-mana komputer.</span>
             </div>
         </section>
         
@@ -707,12 +708,15 @@
                         <button class="btn btn-success" id="add-staff-btn">
                             <i class="fas fa-plus"></i> Tambah Kakitangan
                         </button>
+                        <button class="btn btn-primary" id="refresh-staff-btn">
+                            <i class="fas fa-sync-alt"></i> Muat Semula
+                        </button>
                     </div>
                 </div>
                 
                 <div class="alert alert-info" id="staff-alert">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Memuatkan data kakitangan...</span>
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Memuatkan data kakitangan dari Google Sheets...</span>
                 </div>
                 
                 <div class="table-responsive">
@@ -722,14 +726,15 @@
                                 <th>#</th>
                                 <th>Nama</th>
                                 <th>Jawatan</th>
+                                <th>Tarikh Masuk</th>
                                 <th>Tindakan</th>
                             </tr>
                         </thead>
                         <tbody id="staff-body">
                             <tr>
-                                <td colspan="4" class="empty-state">
+                                <td colspan="5" class="empty-state">
                                     <i class="fas fa-spinner fa-spin"></i>
-                                    <h3>Memuatkan data kakitangan...</h3>
+                                    <h3>Memuatkan data kakitangan dari Google Sheets...</h3>
                                 </td>
                             </tr>
                         </tbody>
@@ -742,33 +747,18 @@
         <section id="backup" class="dashboard">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Backup, Sync & Export Data</h2>
+                    <h2 class="card-title">Backup & Export Data</h2>
                 </div>
                 
                 <div class="alert alert-warning" id="backup-alert">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="fas fa-cloud"></i>
                     <div>
-                        <strong>Penting:</strong> Sistem hybrid online/offline aktif.
+                        <strong>Data Terpusat:</strong> Semua data disimpan dalam Google Sheets dan boleh diakses dari mana-mana komputer.
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-sync-alt"></i> Sync Data</h3>
-                    <div class="data-actions">
-                        <button class="btn btn-success" id="sync-now-btn">
-                            <i class="fas fa-sync-alt"></i> Sync Sekarang
-                        </button>
-                        <button class="btn btn-info" id="check-pending-btn">
-                            <i class="fas fa-list"></i> Lihat Data Pending
-                        </button>
-                    </div>
-                    <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-                        <span id="pending-count">0 data</span> menunggu sync ke Google Sheets
-                    </p>
-                </div>
-                
-                <div class="form-group">
-                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-download"></i> Export Data</h3>
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-download"></i> Export Data dari Google Sheets</h3>
                     <div class="data-actions">
                         <button class="btn btn-primary" id="export-staff-btn">
                             <i class="fas fa-file-excel"></i> Export Data Kakitangan
@@ -780,22 +770,6 @@
                             <i class="fas fa-download"></i> Export Semua Data
                         </button>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-upload"></i> Import Data</h3>
-                    <div class="data-actions">
-                        <button class="btn btn-info" id="import-staff-btn">
-                            <i class="fas fa-file-upload"></i> Import Data Kakitangan
-                        </button>
-                        <button class="btn btn-info" id="import-absence-btn">
-                            <i class="fas fa-file-upload"></i> Import Data Ketidakhadiran
-                        </button>
-                        <input type="file" id="import-file" accept=".json,.csv" style="display: none;">
-                    </div>
-                    <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
-                        <i class="fas fa-info-circle"></i> Format yang disokong: JSON, CSV
-                    </p>
                 </div>
                 
                 <div class="form-group">
@@ -811,29 +785,26 @@
                                 <span id="total-absence-count" style="color: var(--primary); font-weight: bold;">0</span>
                             </div>
                             <div>
-                                <strong>Data Pending Sync:</strong>
-                                <span id="pending-sync-count" style="color: var(--warning); font-weight: bold;">0</span>
+                                <strong>Tarikh Kemaskini Terakhir:</strong>
+                                <span id="last-update" style="color: var(--success); font-weight: bold;">-</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <h3 style="color: var(--danger); margin-bottom: 15px;"><i class="fas fa-trash"></i> Tindakan Berisiko</h3>
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle"></i>
+                    <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-share-alt"></i> Kongsi Aplikasi</h3>
+                    <div class="alert alert-info">
+                        <i class="fas fa-link"></i>
                         <div>
-                            <strong>Peringatan:</strong> Tindakan ini akan memadam data dalam browser sahaja. Data dalam Google Sheets tidak terjejas.
+                            <strong>Link Aplikasi:</strong> <span id="app-url">Loading...</span>
+                            <br>
+                            <small>Kongsi link ini untuk akses dari mana-mana komputer</small>
                         </div>
                     </div>
-                    <div class="data-actions">
-                        <button class="btn btn-danger" id="clear-data-btn">
-                            <i class="fas fa-trash"></i> Kosongkan Data Browser
-                        </button>
-                        <button class="btn btn-danger" id="clear-pending-btn">
-                            <i class="fas fa-times-circle"></i> Kosongkan Data Pending
-                        </button>
-                    </div>
+                    <button class="btn btn-success" id="copy-url-btn">
+                        <i class="fas fa-copy"></i> Salin Link Aplikasi
+                    </button>
                 </div>
             </div>
         </section>
@@ -864,7 +835,7 @@
                         
                         <div class="form-group" style="display: flex; gap: 10px;">
                             <button type="submit" class="btn btn-primary" id="modal-submit-btn" style="flex: 1;">
-                                <i class="fas fa-save"></i> Simpan
+                                <i class="fas fa-save"></i> Simpan ke Google Sheets
                             </button>
                             <button type="button" class="btn btn-warning" id="modal-cancel-btn" style="flex: 1;">
                                 <i class="fas fa-times"></i> Batal
@@ -885,99 +856,140 @@
             </div>
         </div>
         
-        <!-- Modal Pending Data -->
-        <div id="pending-modal" class="modal-overlay" style="display: none;">
-            <div class="modal-content">
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">Data Pending Sync</h2>
-                        <button type="button" class="btn btn-danger btn-sm" id="close-pending-btn">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="alert alert-warning">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Data ini menunggu untuk disync ke Google Sheets</span>
-                    </div>
-                    
-                    <div id="pending-list" style="max-height: 400px; overflow-y: auto;">
-                        <!-- Data pending akan muncul di sini -->
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <div class="footer">
             <p>Aplikasi Ketidakhadiran Kakitangan EDHTAR &copy; <span id="current-year">2023</span></p>
-            <p><i class="fas fa-sync-alt"></i> Hybrid System - Online dengan Google Sheets & Offline Support</p>
+            <p><i class="fas fa-cloud"></i> Data Terpusat di Google Sheets | <i class="fas fa-globe"></i> Boleh diakses dari mana-mana komputer</p>
         </div>
     </div>
 
     <script>
         // ============================================
-        // KONFIGURASI GOOGLE SHEETS
+        // KONFIGURASI UTAMA
         // ============================================
-        // GANTI URL INI DENGAN WEB APP URL ANDA DARI LANGKAH 4
+        // GANTI INI DENGAN WEB APP URL ANDA
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxl4U24QjfA_KaaGWdjvpuvE7PoURN9Bw4dHyhOuJ0_jdWXWJWE8y3W_c6mMEZFqKxm/exec';
         
         // ============================================
-        // SISTEM VARIABLES
+        // DATA STATE
         // ============================================
-        let isOnlineMode = false;
-        let isEditing = false;
-        let currentStaffId = null;
+        let appData = {
+            staff: [],
+            absence: [],
+            lastUpdated: null,
+            isLoading: false
+        };
         
         // ============================================
-        // DETEKSI KONEKSI INTERNET
+        // FUNGSI UTAMA - LOAD DATA DARI GOOGLE SHEETS
         // ============================================
-        function checkInternetConnection() {
-            return navigator.onLine;
+        async function loadDashboardData() {
+            try {
+                setLoadingState(true, 'dashboard');
+                
+                // Load staff data
+                const staffResponse = await callGoogleScript('get_staff');
+                
+                if (!staffResponse.success) {
+                    throw new Error('Gagal memuat data kakitangan: ' + staffResponse.message);
+                }
+                
+                appData.staff = staffResponse.data || [];
+                
+                // Load absence data
+                const absenceResponse = await callGoogleScript('get_absence');
+                
+                if (!absenceResponse.success) {
+                    throw new Error('Gagal memuat data ketidakhadiran: ' + absenceResponse.message);
+                }
+                
+                appData.absence = absenceResponse.data || [];
+                appData.lastUpdated = new Date().toISOString();
+                
+                // Update UI
+                updateDashboardUI();
+                updateStaffTableUI();
+                updateBackupStats();
+                
+                // Update alert
+                updateDashboardAlert(`Data berjaya dimuatkan (${appData.staff.length} kakitangan, ${appData.absence.length} rekod)`, 'success');
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                updateDashboardAlert('Gagal memuatkan data: ' + error.message, 'danger');
+            } finally {
+                setLoadingState(false, 'dashboard');
+            }
         }
         
-        function updateConnectionStatus() {
-            const isOnline = checkInternetConnection();
-            const connectionStatus = document.getElementById('connection-status');
-            
-            if (isOnline) {
-                connectionStatus.innerHTML = `
-                    <i class="fas fa-cloud"></i>
-                    <span><strong>Mode Online:</strong> Data disimpan dalam Google Sheets</span>
-                `;
-                connectionStatus.style.backgroundColor = '#e8f4fc';
-                isOnlineMode = true;
-            } else {
-                connectionStatus.innerHTML = `
-                    <i class="fas fa-laptop"></i>
-                    <span><strong>Mode Offline:</strong> Data disimpan dalam browser sementara</span>
-                `;
-                connectionStatus.style.backgroundColor = '#fff3cd';
-                isOnlineMode = false;
+        async function loadStaffData() {
+            try {
+                setLoadingState(true, 'staff');
+                
+                const response = await callGoogleScript('get_staff');
+                
+                if (response.success) {
+                    appData.staff = response.data || [];
+                    updateStaffTableUI();
+                    updateStaffAlert(`Data kakitangan berjaya dimuatkan (${appData.staff.length} rekod)`, 'success');
+                } else {
+                    throw new Error(response.message || 'Gagal memuat data kakitangan');
+                }
+                
+            } catch (error) {
+                console.error('Error loading staff:', error);
+                updateStaffAlert('Gagal memuat data kakitangan: ' + error.message, 'danger');
+            } finally {
+                setLoadingState(false, 'staff');
             }
         }
         
         // ============================================
-        // SISTEM PENYIMPANAN HYBRID (LOCALSTORAGE)
+        // FUNGSI TAMBAH DATA KE GOOGLE SHEETS
         // ============================================
-        function initializeData() {
-            if (!localStorage.getItem('edhtar_staff_offline')) {
-                localStorage.setItem('edhtar_staff_offline', JSON.stringify([]));
+        async function addStaffToSheets(staffData) {
+            try {
+                showLoadingModal(true);
+                
+                const response = await callGoogleScript('add_staff', {
+                    name: staffData.name,
+                    position: staffData.position
+                });
+                
+                if (response.success) {
+                    // Refresh staff data
+                    await loadStaffData();
+                    return { success: true, message: response.message, data: response.data };
+                } else {
+                    throw new Error(response.message || 'Gagal menambah kakitangan');
+                }
+                
+            } catch (error) {
+                console.error('Error adding staff:', error);
+                throw error;
+            } finally {
+                showLoadingModal(false);
             }
-            
-            if (!localStorage.getItem('edhtar_absence_offline')) {
-                localStorage.setItem('edhtar_absence_offline', JSON.stringify([]));
-            }
-            
-            if (!localStorage.getItem('edhtar_pending_sync')) {
-                localStorage.setItem('edhtar_pending_sync', JSON.stringify([]));
-            }
-            
-            if (!localStorage.getItem('edhtar_last_staff_id_offline')) {
-                localStorage.setItem('edhtar_last_staff_id_offline', '0');
-            }
-            
-            if (!localStorage.getItem('edhtar_last_absence_id_offline')) {
-                localStorage.setItem('edhtar_last_absence_id_offline', '0');
+        }
+        
+        async function addAbsenceToSheets(absenceData) {
+            try {
+                showLoadingModal(true);
+                
+                const response = await callGoogleScript('add_absence', absenceData);
+                
+                if (response.success) {
+                    // Refresh dashboard data
+                    await loadDashboardData();
+                    return { success: true, message: response.message, data: response.data };
+                } else {
+                    throw new Error(response.message || 'Gagal menambah rekod ketidakhadiran');
+                }
+                
+            } catch (error) {
+                console.error('Error adding absence:', error);
+                throw error;
+            } finally {
+                showLoadingModal(false);
             }
         }
         
@@ -993,397 +1005,104 @@
                 
                 const response = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Important for Google Apps Script
-                    body: JSON.stringify(payload),
                     headers: {
                         'Content-Type': 'application/json'
-                    }
+                    },
+                    body: JSON.stringify(payload)
                 });
                 
-                // Since we're using no-cors, we can't read the response
-                // Google Apps Script will still process it
-                return { success: true, message: 'Data sent to Google Sheets' };
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result;
                 
             } catch (error) {
                 console.error('API Error:', error);
-                // If error, save to offline storage
-                return { success: false, message: 'Failed to connect to Google Sheets', error: error.message };
-            }
-        }
-        
-        // ============================================
-        // FUNGSI UTAMA - LOAD DATA
-        // ============================================
-        async function loadDashboard() {
-            try {
-                updateDashboardAlert('Memuatkan data...', 'info');
-                
-                // Try to load from Google Sheets if online
-                if (isOnlineMode) {
-                    try {
-                        const stats = await calculateCombinedStats();
-                        updateDashboardUI(stats);
-                        
-                        // Load combined data for tables
-                        const combinedData = await getCombinedData();
-                        updateTopAbsentTable(combinedData.topAbsent);
-                        updateRecentEntries(combinedData.recentEntries);
-                        updateBackupStats(combinedData.staffCount, combinedData.absenceCount);
-                        
-                        updateDashboardAlert('Data dimuatkan dari Google Sheets', 'success');
-                        return;
-                    } catch (error) {
-                        console.log('Falling back to offline data:', error.message);
-                    }
-                }
-                
-                // Fallback to offline data
-                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
-                
-                const stats = calculateStats(absenceData);
-                updateDashboardUI(stats);
-                updateTopAbsentTable(calculateTopAbsent(staffData, absenceData));
-                updateRecentEntries(getRecentEntries(absenceData));
-                updateBackupStats(staffData.length, absenceData.length);
-                
-                const modeText = isOnlineMode ? 'online' : 'offline';
-                updateDashboardAlert(`Data dimuatkan dari penyimpanan ${modeText}`, isOnlineMode ? 'info' : 'warning');
-                
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-                updateDashboardAlert('Gagal memuatkan data: ' + error.message, 'danger');
-            }
-        }
-        
-        async function loadStaff() {
-            try {
-                updateStaffAlert('Memuatkan data kakitangan...', 'info');
-                
-                let staffData = [];
-                
-                if (isOnlineMode) {
-                    try {
-                        // Try to get from Google Sheets
-                        const response = await getStaffFromSheets();
-                        if (response && response.success) {
-                            staffData = response.data;
-                            updateStaffAlert('Data kakitangan dimuatkan dari Google Sheets', 'success');
-                        } else {
-                            throw new Error('Failed to load from Google Sheets');
-                        }
-                    } catch (error) {
-                        // Fallback to offline
-                        staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                        updateStaffAlert('Data dimuatkan dari penyimpanan offline', 'warning');
-                    }
-                } else {
-                    staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                    updateStaffAlert('Data dimuatkan dari penyimpanan offline', 'info');
-                }
-                
-                updateStaffTable(staffData);
-                updateBackupStats(staffData.length, JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]').length);
-                
-            } catch (error) {
-                console.error('Error loading staff:', error);
-                updateStaffAlert('Gagal memuatkan data kakitangan', 'danger');
-            }
-        }
-        
-        // ============================================
-        // FUNGSI CRUD - TAMBAH DATA
-        // ============================================
-        async function addStaff(staffData) {
-            try {
-                // Save to Google Sheets if online
-                if (isOnlineMode) {
-                    try {
-                        const response = await callGoogleScript('add_staff', {
-                            name: staffData.name,
-                            position: staffData.position
-                        });
-                        
-                        if (response.success) {
-                            // Also save to offline storage as backup
-                            saveStaffOffline(staffData);
-                            return { success: true, message: 'Kakitangan berjaya ditambah ke Google Sheets', online: true };
-                        }
-                    } catch (error) {
-                        console.log('Failed to save online, saving offline:', error);
-                    }
-                }
-                
-                // Save to offline storage
-                const id = saveStaffOffline(staffData);
                 return { 
-                    success: true, 
-                    message: 'Kakitangan berjaya ditambah (offline mode)',
-                    id: id,
-                    offline: true 
+                    success: false, 
+                    message: 'Gagal menghubungi Google Sheets: ' + error.message 
                 };
-                
-            } catch (error) {
-                console.error('Error adding staff:', error);
-                throw error;
-            }
-        }
-        
-        async function addAbsence(absenceData) {
-            try {
-                // Save to Google Sheets if online
-                if (isOnlineMode) {
-                    try {
-                        const response = await callGoogleScript('add_absence', absenceData);
-                        
-                        if (response.success) {
-                            // Also save to offline storage as backup
-                            saveAbsenceOffline(absenceData);
-                            return { success: true, message: 'Rekod berjaya disimpan ke Google Sheets', online: true };
-                        }
-                    } catch (error) {
-                        console.log('Failed to save online, saving offline:', error);
-                    }
-                }
-                
-                // Save to offline storage
-                const id = saveAbsenceOffline(absenceData);
-                return { 
-                    success: true, 
-                    message: 'Rekod berjaya disimpan (offline mode)',
-                    id: id,
-                    offline: true 
-                };
-                
-            } catch (error) {
-                console.error('Error adding absence:', error);
-                throw error;
             }
         }
         
         // ============================================
-        // FUNGSI OFFLINE STORAGE
+        // FUNGSI PERHITUNGAN DATA
         // ============================================
-        function saveStaffOffline(staffData) {
-            const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-            const lastId = parseInt(localStorage.getItem('edhtar_last_staff_id_offline') || '0');
-            const newId = lastId + 1;
-            
-            const newStaff = {
-                id: newId,
-                name: staffData.name,
-                position: staffData.position,
-                join_date: new Date().toISOString().split('T')[0],
-                offline: true,
-                needs_sync: isOnlineMode ? false : true
-            };
-            
-            staffList.push(newStaff);
-            localStorage.setItem('edhtar_staff_offline', JSON.stringify(staffList));
-            localStorage.setItem('edhtar_last_staff_id_offline', newId.toString());
-            
-            // Add to pending sync if offline
-            if (!isOnlineMode) {
-                addToPendingSync('add_staff', newStaff);
-            }
-            
-            return newId;
-        }
-        
-        function saveAbsenceOffline(absenceData) {
-            const absenceList = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
-            const lastId = parseInt(localStorage.getItem('edhtar_last_absence_id_offline') || '0');
-            const newId = lastId + 1;
-            
-            const newAbsence = {
-                id: newId,
-                staff_id: absenceData.staff_id,
-                staff_name: absenceData.staff_name,
-                staff_position: absenceData.staff_position,
-                date: absenceData.date,
-                reason: absenceData.reason,
-                notes: absenceData.notes || '',
-                input_date: new Date().toISOString(),
-                offline: true,
-                needs_sync: isOnlineMode ? false : true
-            };
-            
-            absenceList.push(newAbsence);
-            localStorage.setItem('edhtar_absence_offline', JSON.stringify(absenceList));
-            localStorage.setItem('edhtar_last_absence_id_offline', newId.toString());
-            
-            // Add to pending sync if offline
-            if (!isOnlineMode) {
-                addToPendingSync('add_absence', newAbsence);
-            }
-            
-            return newId;
-        }
-        
-        function addToPendingSync(action, data) {
-            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
-            pendingSync.push({
-                action: action,
-                data: data,
-                timestamp: new Date().toISOString(),
-                status: 'pending'
-            });
-            localStorage.setItem('edhtar_pending_sync', JSON.stringify(pendingSync));
-            updatePendingCount();
-        }
-        
-        // ============================================
-        // FUNGSI SYNC DATA
-        // ============================================
-        async function syncOfflineData() {
-            if (!checkInternetConnection()) {
-                showMessage('warning', 'Tidak ada koneksi internet. Sync akan dilakukan apabila online.');
-                return;
-            }
-            
-            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
-            if (pendingSync.length === 0) {
-                showMessage('info', 'Tiada data offline untuk disync');
-                return;
-            }
-            
-            showLoadingModal(true);
-            
-            try {
-                let successfulSyncs = 0;
-                let failedSyncs = 0;
-                
-                for (let i = 0; i < pendingSync.length; i++) {
-                    const syncItem = pendingSync[i];
-                    
-                    try {
-                        const response = await callGoogleScript(syncItem.action, syncItem.data);
-                        
-                        if (response.success) {
-                            successfulSyncs++;
-                            pendingSync[i].status = 'synced';
-                            pendingSync[i].sync_date = new Date().toISOString();
-                        } else {
-                            failedSyncs++;
-                            pendingSync[i].status = 'failed';
-                            pendingSync[i].error = response.message;
-                        }
-                    } catch (error) {
-                        failedSyncs++;
-                        pendingSync[i].status = 'failed';
-                        pendingSync[i].error = error.message;
-                    }
-                }
-                
-                // Update pending sync list
-                localStorage.setItem('edhtar_pending_sync', JSON.stringify(pendingSync));
-                updatePendingCount();
-                
-                // Show result message
-                if (successfulSyncs > 0) {
-                    showMessage('success', `${successfulSyncs} data berjaya disync ke Google Sheets`);
-                }
-                if (failedSyncs > 0) {
-                    showMessage('warning', `${failedSyncs} data gagal disync. Akan cuba lagi nanti.`);
-                }
-                
-            } catch (error) {
-                showMessage('error', 'Error semasa sync: ' + error.message);
-            } finally {
-                showLoadingModal(false);
-            }
-        }
-        
-        // ============================================
-        // FUNGSI PERHITUNGAN & STATISTIK
-        // ============================================
-        function calculateStats(absenceData) {
+        function calculateStats() {
             let absentCount = 0;
             let elCount = 0;
             let mcCount = 0;
             
-            absenceData.forEach(record => {
-                if (record.reason === 'ABSENT') absentCount++;
-                if (record.reason === 'EL') elCount++;
-                if (record.reason === 'MC') mcCount++;
+            appData.absence.forEach(record => {
+                if (record.Sebab === 'ABSENT') absentCount++;
+                if (record.Sebab === 'EL') elCount++;
+                if (record.Sebab === 'MC') mcCount++;
             });
             
             return { absent: absentCount, el: elCount, mc: mcCount };
         }
         
-        async function calculateCombinedStats() {
-            const offlineAbsence = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
-            const stats = calculateStats(offlineAbsence);
-            return stats;
-        }
-        
-        function calculateTopAbsent(staffData, absenceData) {
+        function calculateTopAbsent() {
             const staffCount = {};
             
-            absenceData.forEach(record => {
-                const staffId = record.staff_id;
+            appData.absence.forEach(record => {
+                const staffId = record.Staff_ID;
                 if (!staffCount[staffId]) {
                     staffCount[staffId] = {
                         staff_id: staffId,
                         absent: 0,
                         el: 0,
                         mc: 0,
-                        total: 0
+                        total: 0,
+                        name: record.Nama,
+                        position: record.Jawatan
                     };
                 }
                 
-                if (record.reason === 'ABSENT') staffCount[staffId].absent++;
-                if (record.reason === 'EL') staffCount[staffId].el++;
-                if (record.reason === 'MC') staffCount[staffId].mc++;
+                if (record.Sebab === 'ABSENT') staffCount[staffId].absent++;
+                if (record.Sebab === 'EL') staffCount[staffId].el++;
+                if (record.Sebab === 'MC') staffCount[staffId].mc++;
                 staffCount[staffId].total++;
             });
             
-            const topAbsent = [];
-            Object.keys(staffCount).forEach(staffId => {
-                const staff = staffData.find(s => s.id == staffId);
-                if (staff) {
-                    topAbsent.push({
-                        ...staffCount[staffId],
-                        name: staff.name,
-                        position: staff.position
-                    });
-                }
-            });
+            const topAbsent = Object.values(staffCount)
+                .sort((a, b) => b.total - a.total)
+                .slice(0, 20);
             
-            return topAbsent.sort((a, b) => b.total - a.total).slice(0, 20);
+            return topAbsent;
         }
         
-        function getRecentEntries(absenceData) {
-            return [...absenceData]
-                .sort((a, b) => new Date(b.date) - new Date(a.date))
+        function getRecentEntries() {
+            return [...appData.absence]
+                .sort((a, b) => new Date(b.Tarikh) - new Date(a.Tarikh))
                 .slice(0, 10);
         }
         
-        async function getCombinedData() {
-            const offlineStaff = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-            const offlineAbsence = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
+        // ============================================
+        // FUNGSI UPDATE UI
+        // ============================================
+        function updateDashboardUI() {
+            const stats = calculateStats();
             
-            return {
-                staffCount: offlineStaff.length,
-                absenceCount: offlineAbsence.length,
-                topAbsent: calculateTopAbsent(offlineStaff, offlineAbsence),
-                recentEntries: getRecentEntries(offlineAbsence)
-            };
-        }
-        
-        // ============================================
-        // FUNGSI UI UPDATE
-        // ============================================
-        function updateDashboardUI(stats) {
+            // Update stats
             document.getElementById("absent-count").textContent = stats.absent;
             document.getElementById("el-count").textContent = stats.el;
             document.getElementById("mc-count").textContent = stats.mc;
+            
+            // Update top absent table
+            updateTopAbsentTable();
+            
+            // Update recent entries
+            updateRecentEntriesTable();
         }
         
-        function updateTopAbsentTable(staffList) {
+        function updateTopAbsentTable() {
             const tbody = document.getElementById("top-absent-body");
+            const topAbsent = calculateTopAbsent();
             
-            if (!staffList || staffList.length === 0) {
+            if (topAbsent.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="7" class="empty-state">
@@ -1397,7 +1116,7 @@
             }
             
             let html = '';
-            staffList.forEach((staff, index) => {
+            topAbsent.forEach((staff, index) => {
                 html += `
                     <tr>
                         <td>${index + 1}</td>
@@ -1414,10 +1133,11 @@
             tbody.innerHTML = html;
         }
         
-        function updateRecentEntries(entries) {
+        function updateRecentEntriesTable() {
             const tbody = document.getElementById("recent-body");
+            const recentEntries = getRecentEntries();
             
-            if (!entries || entries.length === 0) {
+            if (recentEntries.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5" class="empty-state">
@@ -1431,15 +1151,15 @@
             }
             
             let html = '';
-            entries.forEach(entry => {
-                const badgeClass = `badge-${(entry.reason || '').toLowerCase()}`;
+            recentEntries.forEach(entry => {
+                const badgeClass = `badge-${(entry.Sebab || '').toLowerCase()}`;
                 html += `
                     <tr>
-                        <td>${entry.staff_name || '-'}</td>
-                        <td>${entry.staff_position || '-'}</td>
-                        <td>${formatDate(entry.date)}</td>
-                        <td><span class="badge ${badgeClass}">${entry.reason || '-'}</span></td>
-                        <td>${entry.notes || "-"}</td>
+                        <td>${entry.Nama || '-'}</td>
+                        <td>${entry.Jawatan || '-'}</td>
+                        <td>${formatDate(entry.Tarikh)}</td>
+                        <td><span class="badge ${badgeClass}">${entry.Sebab || '-'}</span></td>
+                        <td>${entry.Catatan || "-"}</td>
                     </tr>
                 `;
             });
@@ -1447,49 +1167,33 @@
             tbody.innerHTML = html;
         }
         
-        function updateStaffTable(staffList) {
+        function updateStaffTableUI() {
             const tbody = document.getElementById("staff-body");
             
-            if (!staffList || staffList.length === 0) {
+            if (appData.staff.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4" class="empty-state">
+                        <td colspan="5" class="empty-state">
                             <i class="fas fa-user-plus"></i>
                             <h3>Tiada data kakitangan</h3>
                             <p>Klik "Tambah Kakitangan" untuk mula menambah data</p>
-                            <button class="btn btn-success" id="add-first-staff-btn" style="margin-top: 15px;">
-                                <i class="fas fa-plus"></i> Tambah Kakitangan Pertama
-                            </button>
                         </td>
                     </tr>
                 `;
-                
-                setTimeout(() => {
-                    const btn = document.getElementById('add-first-staff-btn');
-                    if (btn) {
-                        btn.addEventListener('click', () => {
-                            document.getElementById('add-staff-btn').click();
-                        });
-                    }
-                }, 100);
-                
                 return;
             }
             
             let html = '';
-            staffList.forEach((staff, index) => {
-                const offlineBadge = staff.offline ? '<span class="badge badge-warning" style="font-size: 0.7rem; margin-left: 5px;">Offline</span>' : '';
+            appData.staff.forEach((staff, index) => {
                 html += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${staff.name} ${offlineBadge}</td>
-                        <td>${staff.position}</td>
+                        <td>${staff.Nama || '-'}</td>
+                        <td>${staff.Jawatan || '-'}</td>
+                        <td>${formatDate(staff.Tarikh_Masuk)}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-warning btn-sm edit-staff-btn" data-id="${staff.id}" data-name="${staff.name}" data-position="${staff.position}">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button class="btn btn-danger btn-sm delete-staff-btn" data-id="${staff.id}">
+                                <button class="btn btn-danger btn-sm delete-staff-btn" data-id="${staff.ID}">
                                     <i class="fas fa-trash"></i> Padam
                                 </button>
                             </div>
@@ -1499,21 +1203,63 @@
             });
             
             tbody.innerHTML = html;
+            
+            // Attach event listeners
             attachStaffTableEvents();
         }
         
-        function updateBackupStats(staffCount, absenceCount) {
-            document.getElementById("total-staff-count").textContent = staffCount;
-            document.getElementById("total-absence-count").textContent = absenceCount;
-            updatePendingCount();
+        function updateBackupStats() {
+            document.getElementById("total-staff-count").textContent = appData.staff.length;
+            document.getElementById("total-absence-count").textContent = appData.absence.length;
+            
+            if (appData.lastUpdated) {
+                document.getElementById("last-update").textContent = formatDate(appData.lastUpdated);
+            }
         }
         
-        function updatePendingCount() {
-            const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
-            const pendingCount = pendingSync.filter(item => item.status === 'pending').length;
+        // ============================================
+        // FUNGSI HELPER
+        // ============================================
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                
+                return date.toLocaleDateString('ms-MY', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+        
+        function setLoadingState(isLoading, section = 'all') {
+            appData.isLoading = isLoading;
             
-            document.getElementById("pending-count").textContent = `${pendingCount} data`;
-            document.getElementById("pending-sync-count").textContent = pendingCount;
+            if (section === 'dashboard' || section === 'all') {
+                const spinner = document.querySelector('#dashboard-alert i');
+                if (spinner) {
+                    if (isLoading) {
+                        spinner.className = 'fas fa-spinner fa-spin';
+                    } else {
+                        spinner.className = 'fas fa-check-circle';
+                    }
+                }
+            }
+            
+            if (section === 'staff' || section === 'all') {
+                const spinner = document.querySelector('#staff-alert i');
+                if (spinner) {
+                    if (isLoading) {
+                        spinner.className = 'fas fa-spinner fa-spin';
+                    } else {
+                        spinner.className = 'fas fa-check-circle';
+                    }
+                }
+            }
         }
         
         function updateDashboardAlert(message, type) {
@@ -1534,25 +1280,6 @@
             
             alert.className = `alert alert-${type}`;
             alert.innerHTML = `<i class="fas ${icon}"></i> <span>${message}</span>`;
-        }
-        
-        // ============================================
-        // FUNGSI HELPER
-        // ============================================
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            try {
-                const date = new Date(dateString);
-                if (isNaN(date.getTime())) return dateString;
-                
-                return date.toLocaleDateString('ms-MY', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-            } catch (e) {
-                return dateString;
-            }
         }
         
         function showMessage(type, message, duration = 3000) {
@@ -1621,23 +1348,6 @@
         // EVENT LISTENERS
         // ============================================
         function attachStaffTableEvents() {
-            // Edit staff button
-            document.querySelectorAll('.edit-staff-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    const name = this.getAttribute('data-name');
-                    const position = this.getAttribute('data-position');
-                    
-                    document.getElementById('modal-title').textContent = 'Edit Kakitangan';
-                    document.getElementById('staff-id').value = id;
-                    document.getElementById('modal-name').value = name;
-                    document.getElementById('modal-position').value = position;
-                    document.getElementById('staff-modal').style.display = 'flex';
-                    isEditing = true;
-                    currentStaffId = id;
-                });
-            });
-            
             // Delete staff button
             document.querySelectorAll('.delete-staff-btn').forEach(btn => {
                 btn.addEventListener('click', async function() {
@@ -1647,17 +1357,10 @@
                     if (confirm(`Adakah anda pasti ingin memadam kakitangan "${name}"?`)) {
                         try {
                             showLoadingModal(true);
-                            
-                            // Remove from offline storage
-                            const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                            const filteredList = staffList.filter(staff => staff.id != id);
-                            localStorage.setItem('edhtar_staff_offline', JSON.stringify(filteredList));
-                            
-                            showMessage('success', 'Kakitangan berjaya dipadam');
-                            loadStaff();
-                            loadDashboard();
+                            // Note: For production, you'd need to add delete functionality to Google Apps Script
+                            showMessage('warning', 'Fungsi padam sedang dalam pembangunan');
                         } catch (error) {
-                            showMessage('error', 'Gagal memadam kakitangan: ' + error.message, 5000);
+                            showMessage('error', 'Gagal memadam: ' + error.message);
                         } finally {
                             showLoadingModal(false);
                         }
@@ -1670,23 +1373,18 @@
         // INITIALIZATION
         // ============================================
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialize data storage
-            initializeData();
-            
             // Set current year
             document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // Set app URL
+            document.getElementById('app-url').textContent = window.location.href;
             
             // Set default date to today
             const today = new Date().toISOString().split('T')[0];
             document.getElementById("absence-date").value = today;
             
-            // Update connection status
-            updateConnectionStatus();
-            updatePendingCount();
-            
             // Load initial data
-            loadDashboard();
-            loadStaff();
+            loadDashboardData();
             
             // ============================================
             // NAVIGATION TABS
@@ -1710,13 +1408,13 @@
                     const tabId = this.getAttribute("data-tab");
                     document.getElementById(tabId).classList.add("active");
                     
-                    // Refresh data when switching tabs
+                    // Load data for selected tab
                     if (tabId === 'dashboard') {
-                        loadDashboard();
+                        loadDashboardData();
                     } else if (tabId === 'staff') {
-                        loadStaff();
+                        loadStaffData();
                     } else if (tabId === 'backup') {
-                        updatePendingCount();
+                        updateBackupStats();
                     }
                 });
             });
@@ -1726,14 +1424,13 @@
             // ============================================
             document.getElementById("refresh-dashboard").addEventListener("click", function() {
                 const originalHTML = this.innerHTML;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyegarkan...';
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
                 this.disabled = true;
                 
-                setTimeout(() => {
-                    loadDashboard();
+                loadDashboardData().finally(() => {
                     this.innerHTML = originalHTML;
                     this.disabled = false;
-                }, 500);
+                });
             });
             
             // ============================================
@@ -1763,11 +1460,10 @@
                 resultsDiv.style.display = "block";
                 
                 searchTimeout = setTimeout(() => {
-                    const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
                     const searchTerm = query.toLowerCase();
-                    const results = staffList.filter(staff => 
-                        staff.name.toLowerCase().includes(searchTerm) ||
-                        staff.position.toLowerCase().includes(searchTerm)
+                    const results = appData.staff.filter(staff => 
+                        (staff.Nama && staff.Nama.toLowerCase().includes(searchTerm)) ||
+                        (staff.Jawatan && staff.Jawatan.toLowerCase().includes(searchTerm))
                     );
                     
                     if (results.length === 0) {
@@ -1782,12 +1478,12 @@
                         results.forEach(staff => {
                             html += `
                                 <div class="staff-result-item" 
-                                     data-id="${staff.id}" 
-                                     data-name="${staff.name}" 
-                                     data-position="${staff.position}"
+                                     data-id="${staff.ID}" 
+                                     data-name="${staff.Nama}" 
+                                     data-position="${staff.Jawatan}"
                                      style="padding: 10px 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s;">
-                                    <div style="font-weight: 500;">${staff.name}</div>
-                                    <div style="font-size: 0.85rem; color: #666;">${staff.position}</div>
+                                    <div style="font-weight: 500;">${staff.Nama}</div>
+                                    <div style="font-size: 0.85rem; color: #666;">${staff.Jawatan}</div>
                                 </div>
                             `;
                         });
@@ -1857,18 +1553,17 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    showLoadingModal(true);
-                    
                     // Find staff ID
-                    const staffList = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                    const staff = staffList.find(s => s.name === name && s.position === position);
+                    const staff = appData.staff.find(s => 
+                        s.Nama === name && s.Jawatan === position
+                    );
                     
                     if (!staff) {
                         throw new Error('Kakitangan tidak ditemui. Sila tambah kakitangan dahulu.');
                     }
                     
-                    const result = await addAbsence({
-                        staff_id: staff.id,
+                    const result = await addAbsenceToSheets({
+                        staff_id: staff.ID,
                         staff_name: name,
                         staff_position: position,
                         date: date,
@@ -1876,23 +1571,18 @@
                         notes: notes
                     });
                     
-                    const modeText = result.offline ? ' (offline)' : ' (online)';
-                    showMessage('success', result.message + modeText);
+                    showMessage('success', result.message);
                     
                     // Reset form
                     document.getElementById("absence-form").reset();
                     document.getElementById("absence-date").value = today;
                     document.getElementById("staff-results").style.display = "none";
                     
-                    // Refresh dashboard
-                    loadDashboard();
-                    
                 } catch (error) {
                     showMessage('error', 'Gagal menyimpan rekod: ' + error.message, 5000);
                 } finally {
                     submitBtn.innerHTML = originalHTML;
                     submitBtn.disabled = false;
-                    showLoadingModal(false);
                 }
             });
             
@@ -1905,14 +1595,22 @@
                 document.getElementById('modal-name').value = '';
                 document.getElementById('modal-position').value = '';
                 document.getElementById('staff-modal').style.display = 'flex';
-                isEditing = false;
-                currentStaffId = null;
+            });
+            
+            document.getElementById("refresh-staff-btn").addEventListener("click", function() {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memuat...';
+                this.disabled = true;
+                
+                loadStaffData().finally(() => {
+                    this.innerHTML = originalHTML;
+                    this.disabled = false;
+                });
             });
             
             document.getElementById("staff-form").addEventListener("submit", async function(e) {
                 e.preventDefault();
                 
-                const id = document.getElementById('staff-id').value;
                 const name = document.getElementById('modal-name').value.trim();
                 const position = document.getElementById('modal-position').value.trim();
                 
@@ -1927,19 +1625,12 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    showLoadingModal(true);
+                    const result = await addStaffToSheets({ name, position });
                     
-                    const result = await addStaff({ name, position });
-                    
-                    const modeText = result.offline ? ' (offline)' : ' (online)';
-                    showMessage('success', result.message + modeText);
+                    showMessage('success', result.message);
                     
                     // Close modal and refresh
                     document.getElementById('staff-modal').style.display = 'none';
-                    loadStaff();
-                    loadDashboard();
-                    
-                    // Reset form
                     this.reset();
                     
                 } catch (error) {
@@ -1947,7 +1638,6 @@
                 } finally {
                     submitBtn.innerHTML = originalHTML;
                     submitBtn.disabled = false;
-                    showLoadingModal(false);
                 }
             });
             
@@ -1955,126 +1645,52 @@
             document.getElementById("close-modal-btn").addEventListener("click", function() {
                 document.getElementById('staff-modal').style.display = 'none';
                 document.getElementById('staff-form').reset();
-                isEditing = false;
-                currentStaffId = null;
             });
             
             document.getElementById("modal-cancel-btn").addEventListener("click", function() {
                 document.getElementById('staff-modal').style.display = 'none';
                 document.getElementById('staff-form').reset();
-                isEditing = false;
-                currentStaffId = null;
             });
             
             document.getElementById('staff-modal').addEventListener('click', function(e) {
                 if (e.target === this) {
                     this.style.display = 'none';
                     document.getElementById('staff-form').reset();
-                    isEditing = false;
-                    currentStaffId = null;
                 }
             });
             
             // ============================================
-            // BACKUP & SYNC EVENTS
+            // BACKUP & EXPORT EVENTS
             // ============================================
-            document.getElementById("sync-now-btn").addEventListener("click", syncOfflineData);
-            
-            document.getElementById("check-pending-btn").addEventListener("click", function() {
-                const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
-                const pendingList = document.getElementById('pending-list');
-                
-                if (pendingSync.length === 0) {
-                    pendingList.innerHTML = `
-                        <div class="empty-state">
-                            <i class="fas fa-check-circle"></i>
-                            <h3>Tiada data pending</h3>
-                            <p>Semua data telah disync</p>
-                        </div>
-                    `;
-                } else {
-                    let html = '<div style="padding: 15px;">';
-                    pendingSync.forEach((item, index) => {
-                        const statusColor = item.status === 'pending' ? 'warning' : 
-                                          item.status === 'synced' ? 'success' : 'danger';
-                        const statusIcon = item.status === 'pending' ? 'fa-clock' : 
-                                         item.status === 'synced' ? 'fa-check' : 'fa-times';
-                        
-                        html += `
-                            <div style="padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <strong>${item.action === 'add_staff' ? 'Tambah Kakitangan' : 'Tambah Ketidakhadiran'}</strong>
-                                        <span class="badge badge-${statusColor}" style="margin-left: 10px;">
-                                            <i class="fas ${statusIcon}"></i> ${item.status}
-                                        </span>
-                                    </div>
-                                    <small>${formatDate(item.timestamp)}</small>
-                                </div>
-                                <div style="margin-top: 5px; font-size: 0.9rem; color: #666;">
-                                    ${item.action === 'add_staff' ? 
-                                        `Nama: ${item.data.name}, Jawatan: ${item.data.position}` : 
-                                        `Nama: ${item.data.staff_name}, Tarikh: ${formatDate(item.data.date)}, Sebab: ${item.data.reason}`}
-                                </div>
-                                ${item.error ? `<div style="color: #e74c3c; font-size: 0.8rem; margin-top: 5px;">Error: ${item.error}</div>` : ''}
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                    pendingList.innerHTML = html;
-                }
-                
-                document.getElementById('pending-modal').style.display = 'flex';
-            });
-            
-            document.getElementById("close-pending-btn").addEventListener("click", function() {
-                document.getElementById('pending-modal').style.display = 'none';
-            });
-            
-            document.getElementById('pending-modal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    this.style.display = 'none';
-                }
-            });
-            
-            // Export buttons
             document.getElementById("export-staff-btn").addEventListener("click", function() {
-                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                if (staffData.length === 0) {
+                if (appData.staff.length === 0) {
                     showMessage('warning', 'Tiada data kakitangan untuk diexport');
                     return;
                 }
                 
-                const csvContent = convertToCSV(staffData);
+                const csvContent = convertToCSV(appData.staff);
                 downloadCSV(csvContent, `edhtar_kakitangan_${new Date().toISOString().split('T')[0]}.csv`);
                 showMessage('success', 'Data kakitangan berjaya diexport');
             });
             
             document.getElementById("export-absence-btn").addEventListener("click", function() {
-                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
-                if (absenceData.length === 0) {
+                if (appData.absence.length === 0) {
                     showMessage('warning', 'Tiada data ketidakhadiran untuk diexport');
                     return;
                 }
                 
-                const csvContent = convertToCSV(absenceData);
+                const csvContent = convertToCSV(appData.absence);
                 downloadCSV(csvContent, `edhtar_ketidakhadiran_${new Date().toISOString().split('T')[0]}.csv`);
                 showMessage('success', 'Data ketidakhadiran berjaya diexport');
             });
             
             document.getElementById("export-all-btn").addEventListener("click", function() {
-                const staffData = JSON.parse(localStorage.getItem('edhtar_staff_offline') || '[]');
-                const absenceData = JSON.parse(localStorage.getItem('edhtar_absence_offline') || '[]');
-                const pendingSync = JSON.parse(localStorage.getItem('edhtar_pending_sync') || '[]');
-                
                 const allData = {
-                    staff: staffData,
-                    absence: absenceData,
-                    pending_sync: pendingSync,
+                    staff: appData.staff,
+                    absence: appData.absence,
                     export_date: new Date().toISOString(),
-                    total_staff: staffData.length,
-                    total_absence: absenceData.length,
-                    total_pending: pendingSync.length
+                    total_staff: appData.staff.length,
+                    total_absence: appData.absence.length
                 };
                 
                 const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
@@ -2090,52 +1706,29 @@
                 showMessage('success', 'Backup semua data berjaya diexport');
             });
             
-            // Clear data buttons
-            document.getElementById("clear-data-btn").addEventListener("click", function() {
-                if (confirm('Adakah anda pasti ingin mengosongkan SEMUA data dalam browser? Data dalam Google Sheets tidak terjejas.')) {
-                    localStorage.removeItem('edhtar_staff_offline');
-                    localStorage.removeItem('edhtar_absence_offline');
-                    localStorage.removeItem('edhtar_pending_sync');
-                    localStorage.removeItem('edhtar_last_staff_id_offline');
-                    localStorage.removeItem('edhtar_last_absence_id_offline');
-                    
-                    initializeData();
-                    loadDashboard();
-                    loadStaff();
-                    showMessage('success', 'Semua data dalam browser telah dikosongkan');
-                }
-            });
-            
-            document.getElementById("clear-pending-btn").addEventListener("click", function() {
-                if (confirm('Adakah anda pasti ingin mengosongkan data pending sync?')) {
-                    localStorage.setItem('edhtar_pending_sync', JSON.stringify([]));
-                    updatePendingCount();
-                    showMessage('success', 'Data pending sync telah dikosongkan');
-                }
+            document.getElementById("copy-url-btn").addEventListener("click", function() {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    showMessage('success', 'Link aplikasi berjaya disalin');
+                }).catch(err => {
+                    showMessage('error', 'Gagal menyalin link: ' + err.message);
+                });
             });
             
             // ============================================
-            // NETWORK EVENT LISTENERS
+            // AUTO-REFRESH EVERY 30 SECONDS
             // ============================================
-            window.addEventListener('online', function() {
-                updateConnectionStatus();
-                showMessage('success', 'Anda kini online. Data akan disimpan ke Google Sheets.');
-                syncOfflineData();
-                loadDashboard();
-            });
-            
-            window.addEventListener('offline', function() {
-                updateConnectionStatus();
-                showMessage('warning', 'Anda kini offline. Data akan disimpan sementara dalam browser.');
-                loadDashboard();
-            });
-            
-            // Auto-sync every 5 minutes if online
             setInterval(() => {
-                if (isOnlineMode) {
-                    syncOfflineData();
+                if (!document.hidden && appData.lastUpdated) {
+                    const lastUpdate = new Date(appData.lastUpdated);
+                    const now = new Date();
+                    const diffMinutes = (now - lastUpdate) / (1000 * 60);
+                    
+                    if (diffMinutes > 5) { // Refresh if data is older than 5 minutes
+                        loadDashboardData();
+                    }
                 }
-            }, 5 * 60 * 1000);
+            }, 30000); // Check every 30 seconds
             
             // Add CSS animations
             const style = document.createElement('style');
@@ -2153,7 +1746,7 @@
         });
         
         // ============================================
-        // HELPER FUNCTIONS
+        // HELPER FUNCTIONS FOR EXPORT
         // ============================================
         function convertToCSV(data) {
             if (data.length === 0) return '';
@@ -2185,12 +1778,6 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-        }
-        
-        // Fallback function for Google Sheets API (simplified)
-        async function getStaffFromSheets() {
-            // This is a simplified version. In production, you'd make actual API call
-            return { success: true, data: [] };
         }
     </script>
 </body>
